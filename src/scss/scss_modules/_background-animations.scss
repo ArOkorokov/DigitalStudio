@@ -1,0 +1,72 @@
+
+.bg-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: -12;
+  overflow: hidden;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      #12162f 0%,
+      #0b0d1a 70%,
+      #070812 100%
+    );
+}
+
+.bg-gradient__layer {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  top: -10%;
+  left: -10%;
+  filter: blur(120px);
+  opacity: 0.55;
+  will-change: transform;
+  animation: floatLayer 50s ease-in-out infinite;
+
+  --mx: 0px;
+  --my: 0px;
+
+  transform:
+    translate3d(var(--mx), var(--my), 0)
+    scale(1);
+}
+
+/* ───────── Layers ───────── */
+
+.layer-1 {
+  background:
+    radial-gradient(
+      circle at 28% 32%,
+      rgba(31, 209, 199, 0.55),
+      transparent 60%
+    );
+}
+
+.layer-2 {
+  background:
+    radial-gradient(
+      circle at 70% 38%,
+      rgba(123, 92, 255, 0.45),
+      transparent 62%
+    );
+}
+
+.layer-3 {
+  background:
+    radial-gradient(
+      circle at 52% 68%,
+      rgba(180, 225, 255, 0.35),
+      transparent 65%
+    );
+}
+
+/* ───────── Animation ───────── */
+
+@keyframes floatLayer {
+  0%   { }
+  50%  { transform: scale(1.06); }
+  100% { }
+}

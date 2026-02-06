@@ -1,0 +1,26 @@
+@use './scss_modules/_normalize.scss';
+@use './scss_modules/_colors.scss';
+@use './scss_modules/_background-animations.scss';
+@use './scss_modules/_fonts.scss';
+@use './scss_modules/_header.scss';
+@use './scss_modules/_hero.scss';
+@use './scss_modules/_sphere.scss';
+@use './scss_modules/_footer.scss';
+
+
+
+body {
+  margin: 0;
+  width: 100%;
+  font-size: 16px;
+  background-color: colors.$bg-core;
+  overflow-x: hidden;
+}
+.wrapper {
+  display: block;
+  padding: 0 60px;
+}
+.someContent {
+  font-size: 50px;
+
+}
