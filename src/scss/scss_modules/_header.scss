@@ -27,11 +27,13 @@
 
 /* ───────── Burger ───────── */
 
+
 .burger {
   cursor: pointer;
   width: 60px;
   height: 30px;
   position: relative;
+  transition: all 0.3s ease 0s;
 }
 
 .burger::before,
@@ -42,15 +44,108 @@
   height: 2px;
   background-color: #fff;
   left: 0;
+  transition: all 0.3s ease 0s;
 }
 
 .burger::before { top: 0; }
 .burger::after { bottom: 0; }
 
 .burger__decor {
+  transition: all 0.2s ease 0s;
   position: absolute;
   width: 60px;
   height: 2px;
-  background-color: rgba(255,255,255,0.6);
+  background-color: #fff;
   top: 14px;
 }
+.burger-open {
+  &::after {
+    top: 50%;
+    transform: rotate(-45deg);
+  }
+  &::before {
+    top: 50%;
+    transform: rotate(45deg);
+  }
+}
+.burger-open .burger__decor {
+  width: 0;
+}
+/* ───────── Navigation Overlay ───────── */
+.nav {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.nav__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 13, 26, 0.75);
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.nav__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.nav__list li {
+  margin: 22px 0;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.4s ease;
+}
+
+.nav__list a {
+  font-family: montserrat;
+  font-size: 42px;
+  font-weight: 500;
+  color: #b4e1ff;
+  transition: color 0.3s ease;
+}
+
+.nav__list a:hover {
+  color: #1fd1c7;
+}
+
+.nav__cta {
+  padding: 12px 28px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #1fd1c7, #7b5cff);
+  color: #0b0d1a !important;
+}
+
+/* ───────── Active state ───────── */
+.nav-open .nav {
+  pointer-events: auto;
+}
+
+.nav-open .nav__overlay {
+  opacity: 1;
+}
+
+.nav-open .nav__list li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger */
+.nav-open .nav__list li:nth-child(1) { transition-delay: 0.05s; }
+.nav-open .nav__list li:nth-child(2) { transition-delay: 0.1s; }
+.nav-open .nav__list li:nth-child(3) { transition-delay: 0.15s; }
+.nav-open .nav__list li:nth-child(4) { transition-delay: 0.2s; }
+.nav-open .nav__list li:nth-child(5) { transition-delay: 0.25s; }
