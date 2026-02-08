@@ -1,151 +1,179 @@
 @use './scss_modules/_colors.scss' as colors;
+
+/* ─────────────────────────────
+   Header (Stage 0 – Entry Point)
+   ───────────────────────────── */
+
 .header {
-  color: #fff;
-  width: 100%;
   position: relative;
   z-index: 5;
+  width: 100%;
+  color: #fff;
+
+  &__container {
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ───────── Logo Link ───────── */
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+    cursor: pointer;
+
+    perspective: 900px;
+    transform-style: preserve-3d;
+
+    /* стартовая тишина */
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+
+    &.logo-intro {
+      animation: logoIntro 0.9s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    &.is-alive svg {
+      animation: logoBreath 4.5s ease-in-out infinite;
+    }
+
+    svg {
+      width: 120px;
+      height: 120px;
+      transform-style: preserve-3d;
+      will-change: transform, filter;
+      transition: transform 0.6s ease, filter 0.6s ease;
+    }
+
+    /* Убираем hover полностью */
+    &:hover svg {
+      transform: none;
+      filter: none;
+    }
+  }
+
+  &__logo_text {
+    font-family: montserrat;
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: colors.$ice-blue;
+
+    opacity: 0;
+    transform: translateX(-6px);
+
+    .logo-intro & {
+      animation: logoTextFade 0.6s ease forwards;
+      animation-delay: 0.65s;
+    }
+  }
 }
 
-.header__container {
-  padding: 10px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.header__logo {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+/* ─────────────────────────────
+   Logo Animations (Narrative)
+   ───────────────────────────── */
+
+@keyframes logoIntro {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.header__logo_text {
-  font-size: 42px;
-  font-family: montserrat;
-  font-weight: 400;
-  color: colors.$ice-blue;
+@keyframes logoTextFade {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* ───────── Burger ───────── */
+@keyframes logoBreath {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 6px rgba(colors.$soft-violet, 0.25))
+      drop-shadow(0 0 14px rgba(colors.$neon-cyan, 0.18));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 10px rgba(colors.$soft-violet, 0.4))
+      drop-shadow(0 0 26px rgba(colors.$neon-cyan, 0.35));
+  }
+}
 
+/* ─────────────────────────────
+   Burger (Secondary Actor)
+   ───────────────────────────── */
 
 .burger {
-  cursor: pointer;
+  position: relative;
   width: 60px;
   height: 30px;
-  position: relative;
-  transition: all 0.3s ease 0s;
-}
+  cursor: pointer;
+  transition: transform 0.3s ease;
 
-.burger::before,
-.burger::after {
-  content: "";
-  position: absolute;
-  width: 60px;
-  height: 2px;
-  background-color: #fff;
-  left: 0;
-  transition: all 0.3s ease 0s;
-}
-
-.burger::before { top: 0; }
-.burger::after { bottom: 0; }
-
-.burger__decor {
-  transition: all 0.2s ease 0s;
-  position: absolute;
-  width: 60px;
-  height: 2px;
-  background-color: #fff;
-  top: 14px;
-}
-.burger-open {
+  &::before,
   &::after {
-    top: 50%;
-    transform: rotate(-45deg);
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s ease, top 0.3s ease;
   }
-  &::before {
-    top: 50%;
-    transform: rotate(45deg);
+
+  &::before { top: 0; }
+  &::after { bottom: 0; }
+
+  &__decor {
+    position: absolute;
+    top: 14px;
+    width: 60px;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.2s ease;
+  }
+
+  &.burger-open {
+    &::before {
+      top: 50%;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      top: 50%;
+      transform: rotate(-45deg);
+    }
+
+    .burger__decor {
+      width: 0;
+    }
   }
 }
-.burger-open .burger__decor {
-  width: 0;
-}
-/* ───────── Navigation Overlay ───────── */
-.nav {
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  pointer-events: none;
-}
 
-.nav__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(11, 13, 26, 0.75);
-  backdrop-filter: blur(16px);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
+/* ─────────────────────────────
+   Reduced Motion Respect
+   ───────────────────────────── */
 
-.nav__content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media (prefers-reduced-motion: reduce) {
+  .header__logo,
+  .header__logo svg,
+  .header__logo_text {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
 }
-
-.nav__list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-
-.nav__list li {
-  margin: 22px 0;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: all 0.4s ease;
-}
-
-.nav__list a {
-  font-family: montserrat;
-  font-size: 42px;
-  font-weight: 500;
-  color: #b4e1ff;
-  transition: color 0.3s ease;
-}
-
-.nav__list a:hover {
-  color: #1fd1c7;
-}
-
-.nav__cta {
-  padding: 12px 28px;
-  border-radius: 14px;
-  background: linear-gradient(120deg, #1fd1c7, #7b5cff);
-  color: #0b0d1a !important;
-}
-
-/* ───────── Active state ───────── */
-.nav-open .nav {
-  pointer-events: auto;
-}
-
-.nav-open .nav__overlay {
-  opacity: 1;
-}
-
-.nav-open .nav__list li {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* stagger */
-.nav-open .nav__list li:nth-child(1) { transition-delay: 0.05s; }
-.nav-open .nav__list li:nth-child(2) { transition-delay: 0.1s; }
-.nav-open .nav__list li:nth-child(3) { transition-delay: 0.15s; }
-.nav-open .nav__list li:nth-child(4) { transition-delay: 0.2s; }
-.nav-open .nav__list li:nth-child(5) { transition-delay: 0.25s; }
