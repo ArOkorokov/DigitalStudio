@@ -1,108 +1,21 @@
-@use './scss_modules/_colors.scss' as colors;
+// _burger.scss — бургер + оверлей + навигация (полностью адаптивно)
 
-/* ─────────────────────────────
-   Оверлей и Навигация
-   ───────────────────────────── */
-
-/* Оверлей */
-.overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 100vh;
-  background-color: colors.$bg-core;
-  z-index: 999;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: width 0.3s ease;
-}
-
-/* Когда оверлей открыт */
-.overlay.open {
-  width: 100%; /* Разворачиваем на всю ширину */
-}
-
-/* Навигация в оверлее */
-.navigation {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.navigation__list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  text-align: center;
-}
-
-.navigation__item {
-  position: relative;
-  padding: 15px;
-  color: colors.$ice-blue;
-  text-decoration: none;
-  font-size: 30px;
-  font-weight: 600;
-
-  opacity: 0; /* Начальная прозрачность 0 */
-  transform: translateX(30px); /* Начальное смещение */
-  transition: opacity 0.3s ease, transform 0.3s ease-out;
-}
-
-.navigation__item::after {
-    content: "";
-    width: 0;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    background-color: colors.$ice-blue;
-    transition: all 0.4s ease 0s;
-}
-.navigation__item:hover::after {
-    width: 100%;
-}
-
-/* Анимация для всех элементов */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.navigation__item.active {
-  animation: fadeIn 0.3s ease forwards;
-}
-
-/* ─────────────────────────────
-   Бургер (Secondary Actor)
-   ───────────────────────────── */
+@use './colors.scss' as colors;
 
 .burger {
   position: relative;
-  width: 60px;
-  height: 30px;
+  width: clamp(48px, 8vw, 60px);
+  height: clamp(24px, 5vw, 30px);
   cursor: pointer;
-  z-index: 1000; /* Чтобы бургер был поверх оверлея */
+  z-index: 1000;
+  flex-shrink: 0;
 
   &::before,
   &::after {
     content: '';
     position: absolute;
     left: 0;
-    width: 60px;
+    width: 100%;
     height: 2px;
     background-color: #fff;
     transition: transform 0.3s ease, top 0.3s ease;
@@ -113,8 +26,9 @@
 
   &__decor {
     position: absolute;
-    top: 14px;
-    width: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
     height: 2px;
     background-color: #fff;
     transition: width 0.2s ease;
@@ -123,16 +37,105 @@
   &.burger-open {
     &::before {
       top: 50%;
-      transform: rotate(45deg);
+      transform: translateY(-50%) rotate(45deg);
     }
 
     &::after {
       top: 50%;
-      transform: rotate(-45deg);
+      transform: translateY(-50%) rotate(-45deg);
     }
 
     .burger__decor {
       width: 0;
     }
+  }
+
+  // На десктопе можно скрыть бургер, если добавите отдельное меню (пока оставляем всегда)
+  // @media (min-width: 992px) { display: none; }
+}
+
+/* Оверлей */
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100dvh;                  // динамический vh
+  background-color: colors.$bg-core;
+  z-index: 999;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+
+  &.open {
+    width: 100%;
+  }
+}
+
+/* Навигация */
+.navigation {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+}
+
+.navigation__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 6vw, 40px);
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation__item {
+  position: relative;
+  padding: clamp(8px, 2vw, 15px);
+  color: colors.$ice-blue;
+  font-size: clamp(24px, 6vw, 36px);   // fluid размер текста меню
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: colors.$ice-blue;
+    transform: translateX(-50%);
+    transition: width 0.4s ease;
+  }
+
+  &:hover::after {
+    width: 80%;
+  }
+
+  &.active {
+    animation: fadeIn 0.5s ease forwards;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Дополнительные улучшения на маленьких экранах
+@media (max-width: 479px) {
+  .navigation__list {
+    gap: 16px;
+  }
+
+  .navigation__item {
+    font-size: 22px;
   }
 }

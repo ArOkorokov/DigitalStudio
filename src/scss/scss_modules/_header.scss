@@ -4,31 +4,30 @@
    Header (Stage 0 – Entry Point)
    ───────────────────────────── */
 
+// _header.scss — адаптив для шапки
+
+
 .header {
-  position: relative;
-  z-index: 5;
+  position: relative;                 // фиксируем шапку (если нужно, иначе 
+  top: 0;
+  left: 0;
   width: 100%;
-  color: #fff;
+  background: rgba(colors.$bg-core, 0.2);
+  border-bottom: 1px solid rgba(#fff, 0.05);
 
   &__container {
-    padding: 14px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: clamp(6px, 1.5vw, 12px) clamp(12px, 1.5vw, 20px); // вертикальный отступ адаптивный
   }
 
-  /* ───────── Logo Link ───────── */
+  /* ───────── Logo ───────── */
   &__logo {
+    z-index: 1000;
     display: flex;
     align-items: center;
-    gap: 20px;
-    text-decoration: none;
-    cursor: pointer;
-    z-index: 1000;
-    perspective: 900px;
-    transform-style: preserve-3d;
-
-    /* стартовая тишина */
+    gap: clamp(12px, 2vw, 20px);
     opacity: 0;
     transform: translateY(6px) scale(0.98);
 
@@ -42,33 +41,37 @@
     }
 
     svg {
-      width: 120px;
-      height: 120px;
-      transform-style: preserve-3d;
-      will-change: transform, filter;
-      transition: transform 0.6s ease, filter 0.6s ease;
-    }
-
-    /* Убираем hover полностью */
-    &:hover svg {
-      transform: none;
-      filter: none;
+      width: clamp(80px, 8vw, 120px);   // fluid размер логотипа
+      height: clamp(80px, 8vw, 120px);
+      flex-shrink: 0;
     }
   }
 
   &__logo_text {
     font-family: montserrat;
-    font-size: 42px;
+    font-size: clamp(28px, 4vw, 42px);
     font-weight: 400;
     letter-spacing: 0.4px;
     color: colors.$ice-blue;
-
+    white-space: nowrap;
     opacity: 0;
     transform: translateX(-6px);
 
     .logo-intro & {
       animation: logoTextFade 0.6s ease forwards;
       animation-delay: 0.65s;
+    }
+
+    // Скрываем текст на мобильных — остаётся только иконка
+    @media (max-width: 767px) {
+      font-size: 22px;
+    }
+  }
+
+  // На очень маленьких экранах уменьшаем gap
+  @media (max-width: 479px) {
+    &__logo {
+      gap: 8px;
     }
   }
 }

@@ -1,5 +1,7 @@
+// style.scss — главный файл (глобальные стили, подключения модулей и базовый адаптив)
+
 @use './scss_modules/_normalize.scss';
-@use './scss_modules/_colors.scss';
+@use './scss_modules/_colors.scss' as colors;
 @use './scss_modules/_background-animations.scss';
 @use './scss_modules/_fonts.scss';
 @use './scss_modules/_header.scss';
@@ -8,20 +10,38 @@
 @use './scss_modules/_sphere.scss';
 @use './scss_modules/_footer.scss';
 
-
-
 body {
   margin: 0;
   width: 100%;
+  min-height: 100vh;
   font-size: 16px;
   background-color: colors.$bg-core;
   overflow-x: hidden;
+  color: #fff;
 }
-.wrapper {
-  display: block;
-  padding: 0 60px;
-}
-.someContent {
-  font-size: 50px;
 
+// Основной контейнер — responsive padding + ограничение ширины на больших экранах
+.wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;               // ограничиваем на 1920+
+  margin: 0 auto;
+  // padding: clamp(20px, 5vw, 80px) clamp(20px, 4vw, 60px); // вертикаль/горизонталь
+  box-sizing: border-box;
+
+}
+
+// Дополнительное ограничение контента внутри (если понадобится центрировать блоки)
+.container {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+}
+
+// Глобальный фикс для vh на мобильных (адресная строка iOS/Android)
+@supports not (height: 100dvh) {
+  html, body, main { height: 100vh; }
+}
+@supports (height: 100dvh) {
+  html, body, main { height: 100dvh; }
 }
