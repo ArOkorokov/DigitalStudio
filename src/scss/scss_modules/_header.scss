@@ -24,7 +24,7 @@
     gap: 20px;
     text-decoration: none;
     cursor: pointer;
-
+    z-index: 1000;
     perspective: 900px;
     transform-style: preserve-3d;
 
@@ -112,19 +112,3 @@
   }
 }
 
-
-
-/* ─────────────────────────────
-   Reduced Motion Respect
-   ───────────────────────────── */
-
-@media (prefers-reduced-motion: reduce) {
-  .header__logo,
-  .header__logo svg,
-  .header__logo_text {
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-  }
-}
