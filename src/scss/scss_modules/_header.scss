@@ -112,56 +112,7 @@
   }
 }
 
-/* ─────────────────────────────
-   Burger (Secondary Actor)
-   ───────────────────────────── */
 
-.burger {
-  position: relative;
-  width: 60px;
-  height: 30px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 60px;
-    height: 2px;
-    background-color: #fff;
-    transition: transform 0.3s ease, top 0.3s ease;
-  }
-
-  &::before { top: 0; }
-  &::after { bottom: 0; }
-
-  &__decor {
-    position: absolute;
-    top: 14px;
-    width: 60px;
-    height: 2px;
-    background-color: #fff;
-    transition: width 0.2s ease;
-  }
-
-  &.burger-open {
-    &::before {
-      top: 50%;
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      top: 50%;
-      transform: rotate(-45deg);
-    }
-
-    .burger__decor {
-      width: 0;
-    }
-  }
-}
 
 /* ─────────────────────────────
    Reduced Motion Respect

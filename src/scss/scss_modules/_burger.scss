@@ -1,0 +1,121 @@
+@use './scss_modules/_colors.scss' as colors;
+
+/* ─────────────────────────────
+   Оверлей и Навигация
+   ───────────────────────────── */
+
+/* Оверлей */
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100vh;
+  background-color: colors.$bg-core;
+  z-index: 999;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Когда оверлей открыт */
+.overlay.open {
+  width: 100%; /* Разворачиваем на всю ширину */
+}
+
+/* Навигация в оверлее */
+.navigation {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation__list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.navigation__item {
+  padding: 15px;
+  color: colors.$ice-blue;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+
+  opacity: 0; /* Начальная прозрачность 0 */
+  transform: translateX(30px); /* Начальное смещение */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Анимация для всех элементов */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.navigation__item.active {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* ─────────────────────────────
+   Бургер (Secondary Actor)
+   ───────────────────────────── */
+
+.burger {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 1000; /* Чтобы бургер был поверх оверлея */
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #fff;
+    transition: transform 0.3s ease, top 0.3s ease;
+  }
+
+  &::before { top: 0; }
+  &::after { bottom: 0; }
+
+  &__decor {
+    position: absolute;
+    top: 14px;
+    width: 60px;
+    height: 2px;
+    background-color: #fff;
+    transition: width 0.2s ease;
+  }
+
+  &.burger-open {
+    &::before {
+      top: 50%;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      top: 50%;
+      transform: rotate(-45deg);
+    }
+
+    .burger__decor {
+      width: 0;
+    }
+  }
+}
